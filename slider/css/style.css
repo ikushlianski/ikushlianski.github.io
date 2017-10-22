@@ -12,6 +12,9 @@ body {
   margin: 0em;
 
 }
+.bannercontent a {
+  color: yellow;
+}
 .preloader {
   background-color: black;
   width: 100%;
