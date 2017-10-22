@@ -1,0 +1,71 @@
+body {
+  background-image:
+  url('paws.png'), url('https://photos.smugmug.com/BuyPhotoArtWork/Backgrounds/i-p7C2xQB/2/cc641d98/S/ERP_Bkgnd_Neutral45Mesh-S.jpg');
+  background-size:cover;
+  font-family: arial;
+}
+#catViewSection {
+  margin-top: 5%;
+}
+#catViewSection img {
+  max-width: 300px;
+  max-width: 100%;
+  border: 1px dashed #b27439;
+}
+#catlist {
+  list-style: none;
+  color: blue;
+  text-decoration: underline;
+  display: inline-block;
+  padding: 0px;
+  margin: 0px;
+}
+#catlist li:hover {
+  color: darkblue;
+  cursor: pointer;
+}
+.notice {
+  height: 100%;
+  padding: 10px;
+}
+.clicks {
+  background-color: #ebeae8;
+  padding: 5px;
+  padding-left: 2px;
+  font-weight: bold;
+}
+#catlist li {
+    display: inline;
+    padding: 10px 10px 10px 0px;
+}
+.container-right {
+ background: url('paw_back_notice.png'), url('design_stamp.png');
+ background-color: white;
+ background-repeat: no-repeat;
+ background-position: 8em 0%, 70% 5%;
+ border: 2px dashed #b27439;
+}
+.notice h4 {
+  margin-top: 10px;
+  margin-bottom: 2px;
+  font-weight: bold;
+  color: rgb(178, 116, 57);
+}
+.container-right hr {
+  margin: 0px;
+}
+.githubLink {
+  width: 32px;
+  height: 32px;
+}
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  margin-top: 1%;
+  align-self: center;
+}
+.socialLinks a {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
