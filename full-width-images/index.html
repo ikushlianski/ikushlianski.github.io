@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <title>Full width images example</title>
+</head>
+<body>
+
+  <img src="./cat1.jpg" alt="" class="outsideContainerImage" >
+
+  <div class="introText">
+    <h1 class="">Full-width images example</h1>
+    <p class="lead">It's easy to make responsive full-with images outside <u>Bootstrap's container class</u>. The cat above agrees.</p>
+  </div>
+  <div class="container">
+    <h1 style="text-align: center">* Container class begins *</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit ex repellat harum inventore, voluptatum est veritatis quis nesciunt temporibus natus illum, vero laborum. Voluptatibus dolor quo dicta laborum quis vel explicabo tempore mollitia omnis facilis sit voluptatem repudiandae voluptatum et rerum, est magni quasi ipsam expedita illum quae laudantium, aspernatur labore.</p>
+    <p class="lead">However, when it comes to full-width images inside the .container class, it's a bit trickier.</p>
+    <p class="lead" style="text-align:center">This image is constrained within .container and is 100% wide.</p>
+    <img src="./cat-2.jpg" alt="" style="width: 100%">
+    <p></p>
+    <p>Eligendi excepturi possimus eum ullam veritatis, sed beatae numquam vel et natus cupiditate cumque cum, suscipit ut iure incidunt facilis mollitia ea aspernatur voluptas ratione debitis. Sequi doloribus delectus quia non aliquam natus voluptatibus omnis culpa obcaecati fugiat magni accusamus odio cum dolorem rerum ad ratione laboriosam nihil, vitae ipsum. Iste qui id a laudantium adipisci, debitis enim, aperiam officiis sequi sapiente distinctio voluptatum placeat repudiandae labore neque nesciunt reiciendis molestiae. Alias harum aspernatur quia odit.</p>
+    <p class="lead" style="text-align:center">Let's a bit of magic and make this image always full-width regardless of .container class.</p>
+    <img src="./cat-2.jpg" alt="" class="full-width-img" style="width: 100%">
+    <p class="lead" style="text-align:center">Check with any width (page reload required).</p>
+    <p class="lead" style="text-align:center">If full-width size exceeds the natural size of our image, the max natural size will be used for better UX.</p>
+    <p class="lead" style="text-align:center">Get the Javascript code <a href="https://github.com/ikushlianski/full-width-images-on-narrow-screens">here</a> (requires jQuery)</p>
+    <p class="lead" style="text-align:center"><a href="http://ilya.online">by Ilya Kushlianski</a></p>
+  </div>
+  <script type="text/javascript" src="./jquery-3.2.1.min.js">
+  </script>
+  <script type="text/javascript" src="./full-width-images.js">
+  </script>
+</body>
+</html>
