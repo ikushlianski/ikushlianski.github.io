@@ -1,4 +1,4 @@
-## These are a couple of my beginner works
+## Ilya Kushlianski. Some beginner works
 
 #### Slider with preloader
 An animated slider that switches slides every couple of seconds. A custom preloader looks neat!
@@ -14,3 +14,7 @@ At that time jQuery was still a thing and here I show how to make full-bleed ima
 From this example I learned about MVC concept and implemented a simple version of it, of course with cats! 
 
 [This time, cats only!](https://ikushlianski.github.io/catclicker)
+
+
+#### Visit my website to see more works and see the list of technologies I am working with
+[ilya.online](https://ilya.online)
