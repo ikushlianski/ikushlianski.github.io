@@ -1,0 +1,330 @@
+openapi: 3.0.3
+info:
+  title: Family Car Tracker - OpenAPI 3.0
+  description: |-
+    This is a sample family car tracking application allowing us to book car usage times.
+    
+    Since I'm are using cookie auth on this Family Car project, the Try It Out feature won't work in browsers due to security limitations. Please use Postman to try these requests.
+    
+    Database is located in AWS DynamoDB, it's named `development-family-car-booking-app`
+  contact:
+    email: kushliansky@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: https://18qv4o7xm9.execute-api.eu-west-1.amazonaws.com
+paths:
+  /login:
+    post:
+      summary: Login with your credentials
+      description: You must provide a cookie called `sessionId` with a value that corresponds to your user in the database. We assume that the user is already registered, so you should find it in the DynamoDB database. When calling this endpoint for the first time, you should not supply any auth cookie (`sessionId`). But for subsequent calls, please ensure you attach the `sessionId` cookie returned from previous `/login` calls. Ask backend team for any support.
+      parameters:
+        - in: cookie
+          name: sessionId
+          description: Cookie that should go with your user's request. This `sessionId` cookie value is located in DynamoDB database, assuming your user logged in previously. If you don't know your sessionId, it was likely not generated. Call the `/login` endpoint to get the session id generated and returned to you in the cookies
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: masha
+                password:
+                  type: string
+                  example: myPassW0rd
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    example: masha
+                  password:
+                    type: string
+                    example: myPassW0rd
+        '401':
+          description: Unauthorized. Invalid credentials presented or cookie was not included in the request or cookie is incorrect.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'Invalid credentials provided'
+
+  /user/{username}:
+    get:
+      summary: Get user info
+      description: Information about the user, their rides, cars etc.
+      parameters:
+        - in: path
+          name: username
+          description: User's name as it appears in the DynamoDB database
+          schema:
+            type: string
+          required: true
+        - in: cookie
+          name: sessionId
+          description: Cookie that should go with your user's request. This `sessionId` cookie value is located in DynamoDB database, assuming your user logged in previously. If you don't know your sessionId, it was likely not generated. Call the `/login` endpoint to get the session id generated and returned to you in the cookies
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                      firstName:
+                        type: string
+                      sessionId:
+                        type: string
+                      roles:
+                        type: array
+                        items:
+                          type: string
+                        example: [ "driver", "carProvider" ]
+                      availableCars:
+                        type: array
+                        items:
+                          type: string
+                        example: [ "ho-123", "renault-789" ]
+                      providedCars:
+                        type: array
+                        items:
+                          type: string
+                        example: [ "renault-789" ]
+                      settings:
+                        $ref: '#/components/schemas/Settings'
+
+
+        '401':
+          description: Unauthorized. Invalid credentials presented or cookie was not included in the request or cookie is incorrect.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'Invalid credentials provided'
+
+  /bookings/id:
+    get:
+      summary: Get booking by ID
+      description: Information about the booking
+      parameters:
+        - in: query
+          name: username
+          description: User's name as it appears in the DynamoDB database
+          example: ilya_nice
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: carId
+          example: ho-123456
+          description: User's car id (license plate)
+          schema:
+            type: string
+        - in: query
+          name: startTime
+          example: 1659716808
+          description: Timestamp (seconds, not JS milliseconds) of the booking start time
+          schema:
+            type: string
+        - in: cookie
+          name: sessionId
+          description: Cookie that should go with your user's request. This `sessionId` cookie value is located in DynamoDB database, assuming your user logged in previously. If you don't know your sessionId, it was likely not generated. Call the `/login` endpoint to get the session id generated and returned to you in the cookies
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  booking:
+                    type: object
+                    properties:
+                      bookingOwner:
+                        type: object
+                        properties:
+                          username:
+                            type: string
+                          firstName:
+                            type: string
+                          sessionId:
+                            type: string
+                          roles:
+                            type: array
+                            items:
+                              type: string
+                            example: ["driver", "carProvider"]
+                          availableCars:
+                            type: array
+                            items:
+                              type: string
+                            example: ["ho-123", "renault-789"]
+                          providedCars:
+                            type: array
+                            items:
+                              type: string
+                            example: ["renault-789"]
+                          settings:
+                            $ref: '#/components/schemas/Settings'
+                      bookingOwnerId:
+                        type: string
+                        example: "ilya_nice"
+                      carNumber:
+                        type: string
+                        example: "ho-123456"
+                      bookingStartTime:
+                        type: string
+                        example: "2022-10-02T19:27:43.000Z"
+                      bookingDescription:
+                        type: string
+                        example: "Поездка в Новолукомль"
+        '401':
+          description: Unauthorized. Invalid credentials presented or cookie was not included in the request or cookie is incorrect.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'Unauthorized'
+        '404':
+          description: Not Found. Do not rely on the wording of these errors! They may change on the backend side any time. Look at error codes. Check if your fetching library throws an error on response code 500 or still considers it a success and never goes to the `catch` part of the `try/catch` clause.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'Could not find booking by ID'
+        '500':
+          description: Server side error. Do not rely on the wording of these errors! They may change on the backend side any time.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'Error getting booking details'
+
+  /bookings:
+    get:
+      summary: Get all bookings by some criterion (car, user etc.)
+      description: List of bookings for a particular car or a particular user. For example, for family Honda, this should return a list of all bookings, including created by Masha, Ilya and Papa.
+        
+        
+        When `userId` is included in query params together with `carId`, then user details are also returned
+      parameters:
+        - in: query
+          name: carId
+          example: ho-123456
+          description: User's car id (license plate)
+          schema:
+            type: string
+        - in: cookie
+          name: sessionId
+          description: Cookie that should go with your user's request. This `sessionId` cookie value is located in DynamoDB database, assuming your user logged in previously. If you don't know your sessionId, it was likely not generated. Call the `/login` endpoint to get the session id generated and returned to you in the cookies
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bookings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        bookingOwnerId:
+                          type: string
+                          example: mariya_kalib
+                        carNumber:
+                          type: string
+                          example: "ho-123456"
+                        bookingStartTime:
+                          type: string
+                          example: "2022-10-19T13:47:44.000Z"
+                        bookingDescription:
+                          type: string
+                          example: Masha - visit parents
+        '401':
+          description: Unauthorized. You either gave a car number that the current user cannot access, or you forgot to include the cookie in the request, or the cookie is incorrect.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'Unauthorized'
+        '404':
+          description: Bookings not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'Could not find booking by ID'
+        '500':
+          description: Server side error. Do not rely on the wording of these errors! They may change on the backend side any time.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'Error getting booking details'
+
+
+
+components:
+  schemas:
+    Settings:
+      type: object
+      properties:
+        rideCompletionText:
+          type: string
+          example: 'Машина в гараже'
+        notifications:
+          type: object
+          properties:
+            getNotifiedAboutBookingChanges:
+              type: boolean
+            getNotifiedAboutNewBookings:
+              type: boolean
+              example: false
